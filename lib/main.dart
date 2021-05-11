@@ -5,7 +5,7 @@ import 'package:flutter_app/ui/Home.dart';
 void main() {
   // runApp(ScaffoldExample());
   runApp(new MaterialApp(
-    home: BillSplitter(),
+    home: QuizApp(),
   ));
 }
 

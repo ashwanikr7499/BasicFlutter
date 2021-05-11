@@ -1,6 +1,145 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/model/question.dart';
 
+class QuizApp extends StatefulWidget {
+  @override
+  _QuizAppState createState() => _QuizAppState();
+}
+
+class _QuizAppState extends State<QuizApp> {
+  int _currentQuestionIndex=0;
+  List questionBank = [
+    Question.name("Question 1", true),
+    Question.name("Question 2", true),
+    Question.name("Question 3", false),
+    Question.name("Question 4", true),
+    Question.name("Question 5", false),
+    Question.name("Question 6", true),
+    Question.name("Question 7", true)
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("True Citizen"),
+        centerTitle: true,
+        backgroundColor: Colors.blueGrey,
+      ),
+      backgroundColor: Colors.blueGrey,
+      body:Builder(
+        builder:(BuildContext context)=> Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                  child: Image.asset(
+                "images/flag.png",
+                width: 200,
+                height: 200,
+              )),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: Colors.blueGrey.shade400,
+                          style: BorderStyle.solid)),
+                  height: 120,
+                  child: Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      questionBank[_currentQuestionIndex].questionText,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  )),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  RaisedButton(
+                    onPressed: () => _previousQuestion(),
+                    color: Colors.blueGrey.shade900,
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    ),
+                  ),
+                  RaisedButton(
+                    onPressed: () => _checkAnswer(true,context),
+                    color: Colors.blueGrey.shade900,
+                    child: Text(
+                      "True",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  RaisedButton(
+                    onPressed: () => _checkAnswer(false,context),
+                    color: Colors.blueGrey.shade900,
+                    child: Text(
+                      "False",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  RaisedButton(
+                    onPressed: () => _nextQuestion(),
+                    color: Colors.blueGrey.shade900,
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              Spacer()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _nextQuestion() {
+    setState(() {
+      _currentQuestionIndex=(_currentQuestionIndex+1)%questionBank.length;
+    });
+
+  }
+  _checkAnswer(bool userChoice,BuildContext context) {
+    if(userChoice==questionBank[_currentQuestionIndex].isCorrect )
+      {
+        final snackBar=SnackBar(content: Text("Correct"),duration: Duration(milliseconds: 500),backgroundColor: Colors.green,);
+        Scaffold.of(context).showSnackBar(snackBar);
+        debugPrint("Correct");
+      }
+    else
+      {
+        debugPrint("Incorrect");
+        final snackBar=SnackBar(content: Text("Incorrect"),duration: Duration(milliseconds: 500),backgroundColor:Colors.red ,);
+        Scaffold.of(context).showSnackBar(snackBar);
+      }
+    _nextQuestion();
+
+  }
+
+  _previousQuestion() {
+    setState(() {
+      _currentQuestionIndex=(_currentQuestionIndex-1)%questionBank.length;
+    });
+  }
+}
+
+
+//CTRL + .
+//Bill Splitter Application
 class BillSplitter extends StatefulWidget {
   @override
   _BillSplitterState createState() => _BillSplitterState();
@@ -65,7 +204,7 @@ class _BillSplitterState extends State<BillSplitter> {
                           TextInputType.numberWithOptions(decimal: true),
                       style: TextStyle(color: Colors.grey),
                       decoration: InputDecoration(
-                        prefixText: "Bill Amount\t" ,
+                        prefixText: "Bill Amount\t",
                         prefixIcon: Icon(Icons.attach_money),
                       ),
                       onChanged: (String value) {
