@@ -304,7 +304,7 @@ class MovieDetailsHeader extends StatelessWidget {
               fontWeight: FontWeight.w300,
             ),
             children: [
-              TextSpan(text: movie.imageUrl.substring(0, 100)),
+              TextSpan(text: movie.imageUrl),
               TextSpan(text: "more...", style: TextStyle(color: Colors.indigo))
             ]))
       ],
@@ -322,10 +322,10 @@ class MovieDetailsCast extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(children: [
-          MovieField(field: "Cast", value: movie.imageUrl.substring(0, 150)),
+          MovieField(field: "Cast", value: movie.imageUrl+movie.imageUrl),
           MovieField(
-              field: "Directors", value: movie.imageUrl.substring(50, 100)),
-          MovieField(field: "Awards", value: movie.imageUrl.substring(100, 150))
+              field: "Directors", value: movie.imageUrl),
+          MovieField(field: "Awards", value: movie.imageUrl)
         ]));
   }
 }
